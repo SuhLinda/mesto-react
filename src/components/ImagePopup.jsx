@@ -1,8 +1,8 @@
-// ImagePopUp.jsx
+// ImagePopup.jsx
 /////////
 import React from 'react';
 
-function ImagePopUp(props) {
+function ImagePopup(props) {
   return (
     <div
       className={`popup popup-zoom ${props.card.link ? 'popup_opened' : " "}`}
@@ -29,4 +29,4 @@ function ImagePopUp(props) {
   )
 }
 
-export default ImagePopUp;
+export default ImagePopup;

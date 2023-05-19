@@ -1,8 +1,8 @@
-// PopUpWithForm.jsx
+// PopupWithForm.jsx
 
 import React from 'react';
 
-function PopUpWithForm({name, title, children, buttonText, isOpen, onClose}) {
+function PopupWithForm({name, title, children, buttonText, isOpen, onClose}) {
   return (
     <div
       className={`popup popup_${name} ${isOpen ? 'popup_opened' : " "}`}>
@@ -34,7 +34,7 @@ function PopUpWithForm({name, title, children, buttonText, isOpen, onClose}) {
   )
 }
 
-export default PopUpWithForm;
+export default PopupWithForm;
 
 
 

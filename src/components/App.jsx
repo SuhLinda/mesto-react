@@ -2,8 +2,8 @@ import React from 'react'
 import Header from './Header.jsx'
 import Main from './Main.jsx'
 import Footer from './Footer.jsx'
-import PopUpWithForm from '././PopUpWithForm.jsx'
-import ImagePopUp from './ImagePopUp.jsx'
+import PopupWithForm from './PopupWithForm.jsx'
+import ImagePopup from './ImagePopup.jsx'
 
 function App() {
   const [isEditProfilePopUpOpen, isSetEditProfilePopUpOpen] = React.useState(false)
@@ -44,7 +44,7 @@ function App() {
         onCardClick={handleCardClick}
         />
       <Footer />
-      <PopUpWithForm
+      <PopupWithForm
         name="popUpEditProfile"
         title="Редактировать профиль"
         buttonText="Сохранить"
@@ -75,8 +75,8 @@ function App() {
             <span className="description-input-error popup__fieldset-error">
             </span>
           </fieldset>
-      </PopUpWithForm>
-      <PopUpWithForm
+      </PopupWithForm>
+      <PopupWithForm
         name="popUpAvatarProfile"
         title="Обновить аватар"
         buttonText="Сохранить"
@@ -93,8 +93,8 @@ function App() {
             placeholder="Ссылка на картинку"
             required/>
         </fieldset>
-      </PopUpWithForm>
-      <PopUpWithForm
+      </PopupWithForm>
+      <PopupWithForm
         name="popUpAddPlace"
         title="Новое место"
         buttonText="Создать"
@@ -122,8 +122,8 @@ function App() {
           <span className="image-input-error popup__fieldset-error">
           </span>
         </fieldset>
-      </PopUpWithForm>
-      <ImagePopUp
+      </PopupWithForm>
+      <ImagePopup
         card={selectedCard}
         onClose={closeAllPopUps}/>
     </div>
