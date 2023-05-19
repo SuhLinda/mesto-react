@@ -5,29 +5,26 @@ import Card from "./Card.jsx"
 import { api } from "../utils/Api.js";
 
 function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
-  const [userName, setUserName] = React.useState(" ")
-  const [userDescription, setUserDescription] = React.useState(" ")
-  const [userAvatar, setUserAvatar] = React.useState(" ")
-  const [cards, setCards] = React.useState([])
+  const [userName, setUserName] = React.useState(" ");
+  const [userDescription, setUserDescription] = React.useState(" ");
+  const [userAvatar, setUserAvatar] = React.useState(" ");
+  const [cards, setCards] = React.useState([]);
 
-  React.useEffect(() => {
-    api.getUserData()
-      .then((response) => {
-        setUserName(response.name)
-        setUserDescription(response.about)
-        setUserAvatar(response.avatar)
-      })
-      .catch((err) => {
-        console.log(`ошибка: ${err}`)
-      })
-    }, [])
-
-  React.useEffect(() => {
+React.useEffect(() => {
+  Promise.all([
+    api.getUserData(),
     api.getInitialCards()
-      .then((response) => {
-        setCards(response);
-      })
-    }, [])
+  ])
+    .then(([user, card]) => {
+      setUserName(user.name)
+      setUserDescription(user.about)
+      setUserAvatar(user.avatar)
+      setCards(card)
+    })
+    .catch((err) => {
+      console.log(`ошибка: ${err}`)
+    })
+}, [])
 
   return (
     <main className="content">

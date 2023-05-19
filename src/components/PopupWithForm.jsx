@@ -27,7 +27,7 @@ function PopupWithForm({name, title, children, buttonText, isOpen, onClose}) {
             type="submit"
             id={name}
             aria-label="создать">
-              {buttonText}
+            {buttonText}
           </button>
         </div>
     </div>
@@ -35,18 +35,3 @@ function PopupWithForm({name, title, children, buttonText, isOpen, onClose}) {
 }
 
 export default PopupWithForm;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

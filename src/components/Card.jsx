@@ -2,11 +2,10 @@
 
 import React from "react";
 
-function Card(props) {
-  const card = props.card;
+function Card({card, onCardClick, src, title, name}) {
 
   function handleClick() {
-    props.onCardClick(card)
+    onCardClick(card)
   }
 
   return(
@@ -16,14 +15,14 @@ function Card(props) {
           id="element__image"
           className="element__image"
           onClick={handleClick}
-          src={props.src}
-          alt={props.title}/>
+          src={src}
+          alt={title}/>
         <button
           className="element__delete"
           type="button"
           aria-label="удалить">
         </button>
-        <h2 className="element__text">{props.name}
+        <h2 className="element__text">{name}
         </h2>
         <button
           className="element__stroke"
@@ -32,7 +31,7 @@ function Card(props) {
         </button>
         <span className="element__likes-counter">{card.likes.length}
         </span>
-      </div>
+        </div>
     </>
   )
 }

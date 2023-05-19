@@ -6,32 +6,33 @@ import PopupWithForm from './PopupWithForm.jsx'
 import ImagePopup from './ImagePopup.jsx'
 
 function App() {
-  const [isEditProfilePopUpOpen, isSetEditProfilePopUpOpen] = React.useState(false)
-  const [isEditAvatarPopUpOpen, isSetEditAvatarPopUpOpen] = React.useState(false)
-  const [isAddPlacePopUpOpen, isSetAddPlacePopUpOpen] = React.useState(false)
-  const [selectedCard, isSetSelectedCard] = React.useState({})
+  const [isEditProfilePopUpOpen, setEditProfilePopUpOpen] = React.useState(false)
+  const [isEditAvatarPopUpOpen, setEditAvatarPopUpOpen] = React.useState(false)
+  const [isAddPlacePopUpOpen, setAddPlacePopUpOpen] = React.useState(false)
+  const [selectedCard, setSelectedCard] = React.useState({})
+
 
   function handleEditProfileClick() {
-    isSetEditProfilePopUpOpen(true)
+    setEditProfilePopUpOpen(true)
   }
 
   function handleEditAvatarClick() {
-    isSetEditAvatarPopUpOpen(true)
+    setEditAvatarPopUpOpen(true)
   }
 
   function handleAddPlaceClick() {
-    isSetAddPlacePopUpOpen(true)
+    setAddPlacePopUpOpen(true)
   }
 
   function handleCardClick(selectedCard) {
-    isSetSelectedCard(selectedCard)
+    setSelectedCard(selectedCard)
   }
 
   function closeAllPopUps() {
-    isSetEditProfilePopUpOpen(false)
-    isSetEditAvatarPopUpOpen(false)
-    isSetAddPlacePopUpOpen(false)
-    isSetSelectedCard(false)
+    setEditProfilePopUpOpen(false)
+    setEditAvatarPopUpOpen(false)
+    setAddPlacePopUpOpen(false)
+    setSelectedCard(false)
   }
 
   return (
