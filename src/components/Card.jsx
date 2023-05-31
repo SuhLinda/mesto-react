@@ -1,11 +1,30 @@
 // Card.jsx
 
 import React from "react";
+import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
-function Card({card, onCardClick, src, title, name}) {
+function Card({card, onCardClick, onCardDelete, onCardLike}) {
+  const currentUser = React.useContext(CurrentUserContext);
+
+  // Определяем, являемся ли мы владельцем текущей карточки
+  const isOwn = card.owner._id === currentUser._id;
+  // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
+  const isLiked = card.likes.some(i => i._id === currentUser._id);
+  // Создаём переменную, которую после зададим в `className` для кнопки лайка
+  const cardLikeButtonClassName = (
+    `element__stroke ${isLiked && 'element__stroke_active'}`
+  );;
 
   function handleClick() {
-    onCardClick(card)
+    onCardClick(card);
+  }
+
+  function handleDeleteClick() {
+    onCardDelete(card);
+  }
+
+  function handleLikeClick() {
+    onCardLike(card);
   }
 
   return(
@@ -15,19 +34,21 @@ function Card({card, onCardClick, src, title, name}) {
           id="element__image"
           className="element__image"
           onClick={handleClick}
-          src={src}
-          alt={title}/>
-        <button
-          className="element__delete"
-          type="button"
-          aria-label="удалить">
-        </button>
-        <h2 className="element__text">{name}
+          src={card.link}
+          alt={card.name}/>
+        {isOwn &&
+          <button
+            className="element__delete"
+            type="button"
+            aria-label="удалить"
+            onClick={handleDeleteClick} />}
+        <h2 className="element__text">{card.name}
         </h2>
         <button
-          className="element__stroke"
+          className={cardLikeButtonClassName}
           type="button"
-          aria-label="лайк">
+          aria-label="лайк"
+          onClick={handleLikeClick}>
         </button>
         <span className="element__likes-counter">{card.likes.length}
         </span>

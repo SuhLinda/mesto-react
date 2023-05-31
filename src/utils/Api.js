@@ -24,15 +24,15 @@ export default class Api {
   }
 
   //подгрузим наши данные о пользователе на сервер
-  setUserData({name, about}) {
+  setUserData(data) {
     const urlId = `${this._url}/users/me`;
 
     return fetch(urlId, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        name: name,
-        about: about
+        name: data.name,
+        about: data.about
       })
     })
         .then(this._checkTheAnswer);
@@ -45,7 +45,7 @@ export default class Api {
     return fetch(urlId, {
       method: 'PATCH',
       headers: this._headers,
-      body: JSON.stringify({avatar})
+      body: JSON.stringify(avatar)
     })
       .then(this._checkTheAnswer);
   }
@@ -62,15 +62,15 @@ export default class Api {
   }
 
     //подгрузим наши карточки на сервер
-  addNewCard({name, link}) {
+  addNewCard(data) {
     const urlId = `${this._url}/cards`;
 
     return fetch(urlId, {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify({
-        name: name,
-        link: link
+        name: data.name,
+        link: data.link
       })
     })
         .then(this._checkTheAnswer);
@@ -87,7 +87,7 @@ export default class Api {
       .then(this._checkTheAnswer);
   }
 
-    //поставить лайк
+  /*  //поставить лайк
   likesId(id) {
     const urlId = `${this._url}/cards/${id}/likes`;
 
@@ -104,6 +104,17 @@ export default class Api {
 
     return fetch(urlId, {
       method: 'DELETE',
+      headers: this._headers
+    })
+      .then(this._checkTheAnswer);
+  }*/
+
+  //проверим лайки
+  changeLikeCardStatus(id, isLiked) {
+    const urlId = `${this._url}/cards/${id}/likes`;
+
+    return fetch(urlId, {
+      method: isLiked ? 'PUT' : 'DELETE',
       headers: this._headers
     })
       .then(this._checkTheAnswer);

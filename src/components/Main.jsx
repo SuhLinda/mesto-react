@@ -1,37 +1,18 @@
 // Main.jsx
 //////////////
 import React from "react";
-import Card from "./Card.jsx"
-import { api } from "../utils/Api.js";
+import Card from "./Card.jsx";
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
-function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
-  const [userName, setUserName] = React.useState(" ");
-  const [userDescription, setUserDescription] = React.useState(" ");
-  const [userAvatar, setUserAvatar] = React.useState(" ");
-  const [cards, setCards] = React.useState([]);
-
-React.useEffect(() => {
-  Promise.all([
-    api.getUserData(),
-    api.getInitialCards()
-  ])
-    .then(([user, card]) => {
-      setUserName(user.name)
-      setUserDescription(user.about)
-      setUserAvatar(user.avatar)
-      setCards(card)
-    })
-    .catch((err) => {
-      console.log(`ошибка: ${err}`)
-    })
-}, [])
+function Main({cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDelete}) {
+  const currentUser = React.useContext(CurrentUserContext);
 
   return (
     <main className="content">
       <section className="profile">
         <img
           className="profile__image"
-          src={userAvatar}
+          src={currentUser.avatar}
           alt="Жак-Ив Кусто"/>
         <button
           className="profile__image-button"
@@ -39,7 +20,7 @@ React.useEffect(() => {
           onClick={onEditAvatar}>
         </button>
         <div className="profile__info">
-          <h1 className="profile__info-title">{userName}
+          <h1 className="profile__info-title">{currentUser.name}
           </h1>
           <button
             className="profile__info-edit"
@@ -48,7 +29,7 @@ React.useEffect(() => {
             aria-label="редактировать профиль"
             onClick={onEditProfile}>
             </button>
-            <p className="profile__info-subtitle">{userDescription}
+            <p className="profile__info-subtitle">{currentUser.about}
             </p>
         </div>
         <button
@@ -64,11 +45,13 @@ React.useEffect(() => {
         aria-label="фото">
           {cards.map((card) => (
             <Card
-              onCardClick={onCardClick}
               card={card}
               key={card._id}
+              name={card.name}
               src={card.link}
-              name={card.name}/>
+              onCardClick={onCardClick}
+              onCardLike={onCardLike}
+              onCardDelete={onCardDelete}/>
           ))}
       </section>
     </main>
