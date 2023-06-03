@@ -13,7 +13,7 @@ function Main({cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCa
         <img
           className="profile__image"
           src={currentUser.avatar}
-          alt="Жак-Ив Кусто"/>
+          alt="Имя"/>
         <button
           className="profile__image-button"
           type="button"

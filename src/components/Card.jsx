@@ -28,32 +28,30 @@ function Card({card, onCardClick, onCardDelete, onCardLike}) {
   }
 
   return(
-    <>
-      <div className="element">
-        <img
-          id="element__image"
-          className="element__image"
-          onClick={handleClick}
-          src={card.link}
-          alt={card.name}/>
-        {isOwn &&
-          <button
-            className="element__delete"
-            type="button"
-            aria-label="удалить"
-            onClick={handleDeleteClick} />}
-        <h2 className="element__text">{card.name}
-        </h2>
+    <div className="element">
+      <img
+        id="element__image"
+        className="element__image"
+        onClick={handleClick}
+        src={card.link}
+        alt={card.name}/>
+      {isOwn &&
         <button
-          className={cardLikeButtonClassName}
+          className="element__delete"
           type="button"
-          aria-label="лайк"
-          onClick={handleLikeClick}>
-        </button>
-        <span className="element__likes-counter">{card.likes.length}
-        </span>
-        </div>
-    </>
+          aria-label="удалить"
+          onClick={handleDeleteClick} />}
+      <h2 className="element__text">{card.name}
+      </h2>
+      <button
+        className={cardLikeButtonClassName}
+        type="button"
+        aria-label="лайк"
+        onClick={handleLikeClick}>
+      </button>
+      <span className="element__likes-counter">{card.likes.length}
+      </span>
+    </div>
   )
 }
 

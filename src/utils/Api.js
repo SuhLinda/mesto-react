@@ -1,4 +1,4 @@
-export default class Api {
+class Api {
   constructor({url, headers}) {
     this._url = url;
     this._headers = headers;
@@ -11,6 +11,12 @@ export default class Api {
     }
     return Promise.reject(`Ошибка:${res.status}`)
   }
+
+  _request(url, options) {
+    return fetch(url, options)
+      .then(this._checkTheAnswer)
+  }
+
 
   //запрос к серверу о данных пользователя
   getUserData() {
@@ -35,10 +41,10 @@ export default class Api {
         about: data.about
       })
     })
-        .then(this._checkTheAnswer);
+      .then(this._checkTheAnswer);
   }
 
-    //смена аватара пользователя
+  //смена аватара пользователя
   setUserAvatar(avatar) {
     const urlId = `${this._url}/users/me/avatar`;
 
@@ -50,7 +56,7 @@ export default class Api {
       .then(this._checkTheAnswer);
   }
 
-    //запрос к серверу данных карточек
+  //запрос к серверу данных карточек
   getInitialCards() {
     const urlId = `${this._url}/cards`;
 
@@ -61,7 +67,7 @@ export default class Api {
       .then(this._checkTheAnswer);
   }
 
-    //подгрузим наши карточки на сервер
+  //подгрузим наши карточки на сервер
   addNewCard(data) {
     const urlId = `${this._url}/cards`;
 
@@ -73,10 +79,10 @@ export default class Api {
         link: data.link
       })
     })
-        .then(this._checkTheAnswer);
+      .then(this._checkTheAnswer);
   }
 
-    //удалить карточку
+  //удалить карточку
   deleteCard(id) {
     const urlId = `${this._url}/cards/${id}`;
 
@@ -130,4 +136,4 @@ const api = new Api({
   }
 })
 
-export {api}
+export {api};

@@ -1,67 +1,101 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm.jsx";
-import {CurrentUserContext} from "../contexts/CurrentUserContext.js";
 
-function AddPlacePopup({isOpen, onClose, onUpdateCards}) {
-  const currentUser = React.useContext(CurrentUserContext);
-  const [title, setTitle] = React.useState(currentUser.title);
-  const [link, setLink] = React.useState(currentUser.link);
+function AddPlacePopup({isOpen, onClose, onUpdateCards, isLoading, onValidate, errorMessage, toggleButtonState, toggleOfTheInputText}) {
+  const [name, setName] = React.useState("");
+  const [link, setLink] = React.useState("");
+  const [nameDirty, setNameDirty] = React.useState(false);
+  const [linkDirty, setLinkDirty] = React.useState(false);
+  const [nameError, setNameError] = React.useState("Заполните это поле.");
+  const [linkError, setLinkError] = React.useState("Заполните это поле.");
 
   React.useEffect(() => {
-    setTitle(currentUser.title);
-    setLink(currentUser.link);
-  }, [currentUser]);
+    setName("");
+    setLink("");
+  }, [isOpen]);
 
-  function handleChangeTitle(evt) {
-    setTitle(evt.target.value);
+  function handleChangeName(evt) {
+    setName(evt.target.value);
+    if(evt.target.value.length < 2 || evt.target.value.length > 30) {
+      setNameError('Текст должен быть не короче 2 символов');
+      if(!evt.target.value) {
+        setNameError('Текст должен быть не короче 2 символов');
+      }
+    } else {
+      setNameError("");
+    }
   }
 
   function handleChangeLink(evt) {
     setLink(evt.target.value);
+
+    let pattern = "https://.*";
+    if(pattern) {
+      setLinkError('Введите URL.');
+    } else {
+      setLinkError("");
+    }
   }
 
   function handleAddPlaceSubmit(evt) {
     evt.preventDefault();
 
     onUpdateCards({
-      name: title,
+      name: name,
       link: link
     });
+  }
+
+  const blurHandler = (evt) => {
+    switch (evt.target.name) {
+      case 'name':
+        setNameDirty(true);
+        break
+      case 'link':
+        setLinkDirty(true);
+        break
+    }
   }
 
   return (
     <PopupWithForm
       name="popUpAddPlace"
       title="Новое место"
-      buttonText="Создать"
+      buttonText={isLoading? "Создание..." : "Создать"}
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit={handleAddPlaceSubmit}>
+      onSubmit={handleAddPlaceSubmit}
+      onValidate={onValidate}
+      toggleButtonState={toggleButtonState}
+      errorMessage={errorMessage}
+      toggleOfTheInputText={toggleOfTheInputText}>
       <fieldset className="popup__fieldset">
         <input
-          className="popup__fieldset-input"
-          value={title}
-          onChange={handleChangeTitle}
+          onBlur={evt => blurHandler(evt)}
+          className={`popup__fieldset-input ${toggleOfTheInputText && 'popup__fieldset-input_inactive'} ${toggleOfTheInputText && 'popup__fieldset-input_type_error '}`}
+          value={name || ""}
+          onChange={evt => handleChangeName(evt)}
           type="text"
-          minLength="2"
-          maxLength="30"
           id="title-input"
-          name="title"
+          name="name"
           placeholder="Название"
           required/>
-        <span className="title-input-error popup__fieldset-error">
-            </span>
+        <span className={`name-input-error popup__fieldset-error ${errorMessage && 'popup__fieldset-error_active'}`}>
+          {nameDirty && nameError}
+        </span>
         <input
-          className="popup__fieldset-input"
-          value={link}
-          onChange={handleChangeLink}
+          onBlur={evt => blurHandler(evt)}
+          className={`popup__fieldset-input ${toggleOfTheInputText && 'popup__fieldset-input_inactive'} ${toggleOfTheInputText && 'popup__fieldset-input_type_error '}`}
+          value={link || ""}
+          onChange={evt => handleChangeLink(evt)}
           type="url"
           id="image-input"
-          name="image"
+          name="link"
           placeholder="Ссылка на картинку"
           required/>
-        <span className="image-input-error popup__fieldset-error">
-            </span>
+        <span className={`name-input-error popup__fieldset-error ${errorMessage && 'popup__fieldset-error_active'}`}>
+          {linkDirty && linkError}
+        </span>
       </fieldset>
     </PopupWithForm>
   )

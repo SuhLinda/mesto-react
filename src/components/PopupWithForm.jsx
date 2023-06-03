@@ -1,8 +1,12 @@
 // PopupWithForm.jsx
 
 import React from 'react';
+import usePopupClose from "../hooks/usePopupClose.js";
 
-function PopupWithForm({name, title, children, buttonText, isOpen, onClose, onSubmit}) {
+
+function PopupWithForm({name, title, children, buttonText, isOpen, onClose, onSubmit, onValidate, toggleButtonState}) {
+  usePopupClose(isOpen, onClose);
+
   return (
     <div
       className={`popup popup_${name} ${isOpen ? 'popup_opened' : " "}`}>
@@ -19,11 +23,11 @@ function PopupWithForm({name, title, children, buttonText, isOpen, onClose, onSu
           <form
             className="popup__form"
             name={name}
-            id="popup__form_edit"
             noValidate
-            onSubmit={onSubmit}>{children}
+            onSubmit={onSubmit}
+            onChange={onValidate}>{children}
             <button
-              className="popup__button-save"
+              className={`popup__button-save ${toggleButtonState && 'popup__button-save_inactive'}`}
               type="submit"
               id={name}
               aria-label="#">

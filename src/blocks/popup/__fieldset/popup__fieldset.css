@@ -5,12 +5,12 @@
   row-gap: 30px;
   border: none;
   outline: none;
-  margin: 54px 36px 48px;
+  margin: 0 36px 48px 36px;
   padding: 0;
 }
 
 @media screen and (max-width: 600px) {
   .popup__fieldset {
-    margin: 75px 20px 45px;
+    margin: 0 20px 45px 0;
   }
 }
