@@ -1,36 +1,30 @@
-import React from "react";
-import PopupWithForm from "./PopupWithForm.jsx";
+import React from 'react';
+import PopupWithForm from './PopupWithForm.jsx';
+import useFormAndValidationAvatar from '../hooks/useFormAndValidationAvatar.js';
 
 function EditAvatarPopup({isOpen, onClose, onUpdateUserAvatar, isLoading, onValidate, errorMessage, toggleButtonState, toggleOfTheInputText}) {
-  const refAvatar = React.useRef();
-  const [avatar, setAvatar] = React.useState("");
-  const [avatarDirty, setAvatarDirty] = React.useState(false);
-  const [avatarError, setAvatarError] = React.useState("Заполните это поле.");
+  const {
+    avatar,
+    setAvatar,
+    avatarDirty,
+    setAvatarDirty,
+    avatarError,
+    setAvatarError,
+    handleChangeAvatar,
+    blurHandler
+  } = useFormAndValidationAvatar();
 
-  function handleChangeAvatar(evt) {
-    setAvatar(evt.target.value);
-
-    let pattern = "https://.*";
-    if(pattern) {
-      setAvatarError('Введите URL.');
-    } else {
-      setAvatarError("");
-    }
-  }
-
-  const blurHandler = (evt) => {
-    switch (evt.target.name) {
-      case 'avatar':
-        setAvatarDirty(true);
-        break
-    }
-  }
+  React.useEffect(() => {
+    setAvatar("");
+    setAvatarDirty(false);
+    setAvatarError("");
+  }, [isOpen]);
 
   function handleSubmitUserAvatar(evt) {
     evt.preventDefault();
 
     onUpdateUserAvatar({
-      avatar: refAvatar.current.value
+      avatar: avatar
     });
   }
 
@@ -51,11 +45,10 @@ function EditAvatarPopup({isOpen, onClose, onUpdateUserAvatar, isLoading, onVali
           {avatarDirty && avatarError}
         </span>
         <input
-          onBlur={evt => blurHandler(evt)}
+          onBlur={blurHandler}
           className={`popup__fieldset-input ${toggleOfTheInputText && 'popup__fieldset-input_inactive'} ${toggleOfTheInputText && 'popup__fieldset-input_type_error '}`}
           value={avatar || ""}
-          onChange={evt => handleChangeAvatar(evt)}
-          ref={refAvatar}
+          onChange={handleChangeAvatar}
           type="url"
           id="avatar-input"
           name="avatar"

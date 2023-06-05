@@ -24,7 +24,6 @@ function App() {
   const [toggleButtonState, setToggleButtonState] = React.useState(false);
   const [toggleOfTheInputText, setToggleOfTheInputText] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState({});
-  const isOpen = isEditProfilePopupOpen || isEditAvatarPopupOpen || isAddPlacePopupOpen || isDeleteCardPopupOpen || selectedCard.link;
 
   React.useEffect(() => {
     Promise.all([
@@ -41,24 +40,10 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    function closeByEscape(evt) {
-      if(evt.key === 'Escape') {
-        closeAllPopups();
-      }
-    }
-    if(isOpen) {
-      document.addEventListener('keydown', closeByEscape);
-      return () => {
-        document.addEventListener('keydown', closeByEscape);
-      }
-    }
-  }, [isOpen]);
-
-  React.useEffect(() => {
     setToggleButtonState(true);
     setErrorMessage({});
     setToggleOfTheInputText(true);
-  }, [isEditProfilePopupOpen, isEditAvatarPopupOpen, isAddPlacePopupOpen, isDeleteCardPopupOpen]);
+  }, [isEditProfilePopupOpen, isEditAvatarPopupOpen, isAddPlacePopupOpen]);
 
   function isValid(evt) {
     if(!evt.currentTarget.checkValidity) {
@@ -103,21 +88,6 @@ function App() {
     setSelectedCard({});
   }
 
-  function handleCardDelete() {
-    setIsLoading(true);
-
-    function makeRequestCardDelete() {
-      return api.deleteCard(isDeleteCard._id)
-        .then(() => {
-          setCards((state) =>
-            state.filter((item) =>
-              item._id !== isDeleteCard._id))
-        })
-    }
-    handleSubmit(makeRequestCardDelete);
-
-  }
-
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some(item =>
@@ -142,6 +112,21 @@ function App() {
       .then(closeAllPopups)
       .catch(console.error)
       .finally(() => setIsLoading(false))
+  }
+
+
+  function handleCardDelete() {
+    setIsLoading(true);
+
+    function makeRequestCardDelete() {
+      return api.deleteCard(isDeleteCard._id)
+        .then(() => {
+          setCards((state) =>
+            state.filter((item) =>
+              item._id !== isDeleteCard._id))
+        })
+    }
+    handleSubmit(makeRequestCardDelete);
   }
 
   function handleUpdateUser(data) {

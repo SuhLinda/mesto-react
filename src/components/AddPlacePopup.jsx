@@ -1,41 +1,34 @@
-import React from "react";
-import PopupWithForm from "./PopupWithForm.jsx";
+import React from 'react';
+import PopupWithForm from './PopupWithForm.jsx';
+import useFormAndValidationAddPlace from '../hooks/useFormAndValidationAddPlace.js';
 
 function AddPlacePopup({isOpen, onClose, onUpdateCards, isLoading, onValidate, errorMessage, toggleButtonState, toggleOfTheInputText}) {
-  const [name, setName] = React.useState("");
-  const [link, setLink] = React.useState("");
-  const [nameDirty, setNameDirty] = React.useState(false);
-  const [linkDirty, setLinkDirty] = React.useState(false);
-  const [nameError, setNameError] = React.useState("Заполните это поле.");
-  const [linkError, setLinkError] = React.useState("Заполните это поле.");
+  const {
+    name,
+    setName,
+    link,
+    setLink,
+    nameDirty,
+    setNameDirty,
+    linkDirty,
+    setLinkDirty,
+    nameError,
+    setNameError,
+    linkError,
+    setLinkError,
+    handleChangeName,
+    handleChangeLink,
+    blurHandler
+  } = useFormAndValidationAddPlace();
 
   React.useEffect(() => {
     setName("");
     setLink("");
+    setNameDirty(false);
+    setLinkDirty(false);
+    setNameError("");
+    setLinkError("");
   }, [isOpen]);
-
-  function handleChangeName(evt) {
-    setName(evt.target.value);
-    if(evt.target.value.length < 2 || evt.target.value.length > 30) {
-      setNameError('Текст должен быть не короче 2 символов');
-      if(!evt.target.value) {
-        setNameError('Текст должен быть не короче 2 символов');
-      }
-    } else {
-      setNameError("");
-    }
-  }
-
-  function handleChangeLink(evt) {
-    setLink(evt.target.value);
-
-    let pattern = "https://.*";
-    if(pattern) {
-      setLinkError('Введите URL.');
-    } else {
-      setLinkError("");
-    }
-  }
 
   function handleAddPlaceSubmit(evt) {
     evt.preventDefault();
@@ -44,17 +37,6 @@ function AddPlacePopup({isOpen, onClose, onUpdateCards, isLoading, onValidate, e
       name: name,
       link: link
     });
-  }
-
-  const blurHandler = (evt) => {
-    switch (evt.target.name) {
-      case 'name':
-        setNameDirty(true);
-        break
-      case 'link':
-        setLinkDirty(true);
-        break
-    }
   }
 
   return (
@@ -71,10 +53,10 @@ function AddPlacePopup({isOpen, onClose, onUpdateCards, isLoading, onValidate, e
       toggleOfTheInputText={toggleOfTheInputText}>
       <fieldset className="popup__fieldset">
         <input
-          onBlur={evt => blurHandler(evt)}
+          onBlur={blurHandler}
           className={`popup__fieldset-input ${toggleOfTheInputText && 'popup__fieldset-input_inactive'} ${toggleOfTheInputText && 'popup__fieldset-input_type_error '}`}
           value={name || ""}
-          onChange={evt => handleChangeName(evt)}
+          onChange={handleChangeName}
           type="text"
           id="title-input"
           name="name"
@@ -84,10 +66,10 @@ function AddPlacePopup({isOpen, onClose, onUpdateCards, isLoading, onValidate, e
           {nameDirty && nameError}
         </span>
         <input
-          onBlur={evt => blurHandler(evt)}
+          onBlur={blurHandler}
           className={`popup__fieldset-input ${toggleOfTheInputText && 'popup__fieldset-input_inactive'} ${toggleOfTheInputText && 'popup__fieldset-input_type_error '}`}
           value={link || ""}
-          onChange={evt => handleChangeLink(evt)}
+          onChange={handleChangeLink}
           type="url"
           id="image-input"
           name="link"
